@@ -4,51 +4,66 @@ import "./Timer.css"
 const Timer = () => {
 
     const [seconds, setSeconds] = useState(59);
+    const [head, setHead] = useState("Timer");
     const [minutes, setMinutes] = useState(2);
+    const [startTimer, setStartTImer] = useState(false);
+    const [timerId, setTimerId] = useState(0);
 
     var timer;
 
     useEffect(() => {
-        timer = setInterval(() => {
-            setSeconds(seconds - 1);
-            if (seconds === 0) {
-                if (seconds > 0 && minutes > 0) {
-                    setMinutes(minutes - 1);
-                    setSeconds(59);
+        timer = null;
+        if (startTimer) {
+            timer = setInterval(() => {
+                setSeconds(prev => prev -= 1);
+                if (seconds === 0) {
+                    if (seconds > 0 && minutes > 0) {
+                        setMinutes(prev => prev -= 1);
+                        setSeconds(59);
+                    }
+                    else {
+                        setMinutes(0);
+                        setSeconds(0);
+                    }
                 }
-                else {
-                    setMinutes(0);
-                    setSeconds(0);
-                }
-            }
 
 
 
-        }, 1000)
+            }, 1000)
+            setTimerId(timer)
 
-        return () => clearInterval(timer);
-    }, [seconds])
+        } else {
+            clearInterval(timerId);
+        }
+    }, [startTimer])
 
-    const stop=()=>{
-        clearInterval(timer);
-    }
-
-    const restart =()=>{
+    const reset = () => {
+        setStartTImer(false);
         setMinutes(2);
         setSeconds(59);
+
     }
+
+
 
     return (
         <div className='timer'>
             <div className='container'>
                 <div className='timer_container'>
                     <h1>Timer</h1>
-                    <h1>{minutes < 10 ? "0" + minutes : minutes}:
-                        {seconds < 10 ? "0" + seconds : seconds}</h1>
+
+                    <input className='time_input' value={minutes}
+                        onChange={(e) => setMinutes(e.target.value)} />
+
+                    <input className='time_input' value={seconds}
+                        onChange={(e) => setSeconds(e.target.value)} />
+
 
                 </div>
-                <button className='restart' onClick={restart}> Restart</button>
-                <button className='stop' onClick={stop}> Stop</button>
+                <button className='restart' onClick={() => setStartTImer(true)}> Start</button>
+                <button className='pause' onClick={() => setStartTImer(false)}> Pause</button>
+                <button className='continue' onClick={() => setStartTImer(true)}> Continue</button>
+                <button className='reset' onClick={reset}> Reset</button>
             </div>
         </div>
     )

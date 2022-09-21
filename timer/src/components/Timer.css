@@ -15,10 +15,18 @@
     padding: 1rem 6rem;
     border-radius: 1rem;
     background-color: aliceblue;
-    align-items: center;
+    text-align: center;
 }
 
-.stop,.restart{
+.time_input{
+    width: 100px;
+    height: 35px;
+    font-size: 25px;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.pause,.restart,.reset,.continue{
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 18px;
@@ -29,6 +37,6 @@
     cursor: pointer;
 }
 
-.stop{
+.pause,.reset,.continue{
     margin-left: 15px;
 }
