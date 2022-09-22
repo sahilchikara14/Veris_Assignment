@@ -4,21 +4,18 @@ import "./Timer.css"
 const Timer = () => {
 
     const [seconds, setSeconds] = useState(59);
-    const [head, setHead] = useState("Timer");
     const [minutes, setMinutes] = useState(2);
     const [startTimer, setStartTImer] = useState(false);
-    const [timerId, setTimerId] = useState(0);
-
-    var timer;
+   
 
     useEffect(() => {
-        timer = null;
+      let  timer = null;
         if (startTimer) {
             timer = setInterval(() => {
-                setSeconds(prev => prev -= 1);
+                setSeconds(seconds- 1);
                 if (seconds === 0) {
-                    if (seconds > 0 && minutes > 0) {
-                        setMinutes(prev => prev -= 1);
+                    if (seconds === 0 && minutes > 0) {
+                        setMinutes(minutes- 1);
                         setSeconds(59);
                     }
                     else {
@@ -27,15 +24,11 @@ const Timer = () => {
                     }
                 }
 
+            
 
-
-            }, 1000)
-            setTimerId(timer)
-
-        } else {
-            clearInterval(timerId);
-        }
-    }, [startTimer])
+            }, 1000)}
+            return ()=>clearInterval(timer);
+    })
 
     const reset = () => {
         setStartTImer(false);
