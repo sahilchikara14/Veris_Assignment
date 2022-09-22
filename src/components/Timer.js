@@ -3,6 +3,8 @@ import "./Timer.css"
 
 const Timer = () => {
 
+    const [isStart,setIsStart]=useState(true);
+    const [isContinue,setIsContinue]=useState(false);
     const [seconds, setSeconds] = useState(59);
     const [minutes, setMinutes] = useState(2);
     const [startTimer, setStartTImer] = useState(false);
@@ -11,7 +13,7 @@ const Timer = () => {
     useEffect(() => {
       let  timer = null;
         if (startTimer) {
-            timer = setInterval(() => {
+            timer = setTimeout(() => {
                 setSeconds(seconds- 1);
                 if (seconds === 0) {
                     if (seconds === 0 && minutes > 0) {
@@ -27,10 +29,12 @@ const Timer = () => {
             
 
             }, 1000)}
-            return ()=>clearInterval(timer);
+            return ()=>clearTimeout(timer);
     })
 
     const reset = () => {
+        setIsStart(true);
+        setIsContinue(false);
         setStartTImer(false);
         setMinutes(2);
         setSeconds(59);
@@ -53,9 +57,11 @@ const Timer = () => {
 
 
                 </div>
-                <button className='restart' onClick={() => setStartTImer(true)}> Start</button>
+                <button className={isStart?"start":"start-disable"} 
+                 onClick={() => [setStartTImer(true),setIsStart(false),setIsContinue(true)]}> Start</button>
                 <button className='pause' onClick={() => setStartTImer(false)}> Pause</button>
-                <button className='continue' onClick={() => setStartTImer(true)}> Continue</button>
+                <button className={isContinue?"continue":"continue-disable"} 
+                onClick={() => setStartTImer(true)}> Continue</button>
                 <button className='reset' onClick={reset}> Reset</button>
             </div>
         </div>
